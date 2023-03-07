@@ -44,7 +44,11 @@ double PID::TotalError() {
    * TODO: Calculate and return the total error
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
-    double control;
+    double control = error_;
+    total_error_ += pow(error_, 2);
+
+    if (control > output_lim_maxi_) control = output_lim_maxi_;
+    if (control < output_lim_mini_) control = output_lim_mini_;
     return control;
 }
 
@@ -52,4 +56,6 @@ double PID::UpdateDeltaTime(double new_delta_time) {
    /**
    * TODO: Update the delta time with new value
    */
+  dt_ = new_delta_time;
+  return dt_;
 }

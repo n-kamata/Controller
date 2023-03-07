@@ -22,6 +22,7 @@ public:
     double cte_d_ = 0.0;
     double cte_i_ = 0.0;
     double error_ = 0.0;
+    double total_error_ = 0.0;
   
     /*
     * Coefficients
