@@ -303,6 +303,7 @@ int main ()
           // Compute closest points in trajectory.
           for (int i = 0; i < x_points.size(); ++i) {
             const double dist = std::hypot(x_points[i] - x_position, y_points[i] - y_position);
+            closest_dist = std::hypot(x_points[closest_dist_idx] - x_position, y_points[closest_dist_idx] - y_position);
             if (dist < closest_dist) {
               closest_dist = dist;
               closest_dist_idx = i;
