@@ -31,10 +31,12 @@ void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
-  if (abs(dt_) < 0.001) return;
   cte_p_ = cte;
-  cte_d_ = (cte - cte_prev_) / dt_;
-  cte_i_ += cte * dt_;
+  // Skip usage of dt_ if it is invalid.
+ if (dt_ > 0.001) {
+   cte_d_ = (cte - cte_prev_) / dt_;
+   cte_i_ += cte * dt_;
+ }
   cte_prev_ = cte;
   error_ = kpi_ * cte_p_ + kii_ * cte_i_ + kdi_ * cte_d_;
 }
