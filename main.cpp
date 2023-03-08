@@ -218,14 +218,14 @@ int main ()
   /**
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
-
-
+  PID pid_steer = PID();
+  // Adjust feedback gains.
+  pid_steer.Init(0.1, 0.001, 0.001, 1.2, -1.2);
+  
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
-
-  PID pid_steer = PID();
   PID pid_throttle = PID();
   
   // Adjust feedback gains.
@@ -291,26 +291,37 @@ int main ()
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Update the delta time with the previous command
-//           pid_steer.UpdateDeltaTime(new_delta_time);
+          // Update the delta time with the previous command
+          pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
-          double error_steer;
+          double error_steer = 0.0;
+          double steer_output = 0.0;
+          int closest_dist_idx = x_points.size() - 1;
+          double closest_dist = std::numeric_limits<double>::max();
 
-
-          double steer_output;
+          // Compute closest points in trajectory.
+          for (int i = 0; i < x_points.size(); ++i) {
+            const double dist = std::hypot(x_points[i] - x_position, y_points[i] - y_position);
+            if (dist < closest_dist) {
+              closest_dist = dist;
+              closest_dist_idx = i;
+            }
+          }
+          
+          const double desired_yaw = atan2(y_points[closest_dist_idx] - y_position, x_points[closest_dist_idx] - x_position);
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
-//           error_steer = 0;
+           error_steer = desired_yaw - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Compute control to apply
-//           pid_steer.UpdateError(error_steer);
-//           steer_output = pid_steer.TotalError();
+           // Compute control to apply
+           pid_steer.UpdateError(error_steer);
+           steer_output = pid_steer.TotalError();
 
 //           // Save data
 //           file_steer.seekg(std::ios::beg);
@@ -337,7 +348,8 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = 5.0 - velocity ; // TODO: 5.0 is target speed.
+          // error = (desired value) - (actual value)
+          error_throttle = 1.0 - velocity ; // TODO: 5.0 is target speed just for debug.
           double throttle_output;
           double brake_output;
 
