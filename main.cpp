@@ -310,8 +310,8 @@ int main ()
             }
           }
           
-          const double desired_yaw = atan2(y_points[closest_dist_idx] - y_position, x_points[closest_dist_idx] - x_position);
-
+          const double desired_yaw = angle_between_points(x_position, y_position, x_points[closest_dist_idx], y_points[closest_dist_idx]);
+          
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
