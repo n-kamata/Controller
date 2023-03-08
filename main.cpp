@@ -349,7 +349,7 @@ int main ()
           **/
           // modify the following line for step 2
           // error = (desired value) - (actual value)
-          error_throttle = 1.0 - velocity ; // TODO: 5.0 is target speed just for debug.
+          error_throttle = v_points[closest_dist_idx] - velocity;
           double throttle_output;
           double brake_output;
 
